@@ -584,8 +584,90 @@
   <div class="footer-note">Powered by NASA Open APIs · Data courtesy of NASA</div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 <script>
 const NASA_KEY = 'EhKokKDTS19qKDjD4U0Vb4AdC5VC8NK3SojqmWis';
+
+// ── ANIME.JS ANIMATIONS ──
+
+// 1. Nav fade in on load
+anime({
+  targets: 'nav',
+  opacity: [0, 1],
+  translateY: [-10, 0],
+  duration: 800,
+  easing: 'easeOutExpo'
+});
+
+// 2. Suggestion pills stagger in on load
+anime({
+  targets: '.suggestion-pill',
+  opacity: [0, 1],
+  translateY: [12, 0],
+  delay: anime.stagger(60, { start: 1200 }),
+  duration: 500,
+  easing: 'easeOutExpo'
+});
+
+// 3. Counting stats when scrolled into view
+function animateStats() {
+  const statsBar = document.querySelector('.stats-bar');
+  if (!statsBar) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      const stats = [
+        { el: document.querySelectorAll('.stat-number')[0], target: 140, suffix: '+', prefix: '' },
+        { el: document.querySelectorAll('.stat-number')[1], target: 4,   suffix: 'M+', prefix: '' },
+        { el: document.querySelectorAll('.stat-number')[2], target: null, suffix: '', prefix: 'Daily' },
+        { el: document.querySelectorAll('.stat-number')[3], target: null, suffix: '', prefix: 'Free' },
+      ];
+
+      stats.forEach((s, i) => {
+        if (s.target === null) return; // skip non-numeric
+        const obj = { val: 0 };
+        anime({
+          targets: obj,
+          val: s.target,
+          duration: 1800,
+          delay: i * 120,
+          easing: 'easeOutExpo',
+          round: 1,
+          update: () => {
+            s.el.textContent = obj.val + s.suffix;
+          }
+        });
+      });
+
+      observer.disconnect();
+    }
+  }, { threshold: 0.4 });
+
+  observer.observe(statsBar);
+}
+
+animateStats();
+
+// 4. Section titles fade up on scroll
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      anime({
+        targets: entry.target,
+        opacity: [0, 1],
+        translateY: [20, 0],
+        duration: 700,
+        easing: 'easeOutExpo'
+      });
+      sectionObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.2 });
+
+document.querySelectorAll('.section-title, .section-eyebrow, .section-sub').forEach(el => {
+  el.style.opacity = '0';
+  sectionObserver.observe(el);
+});
 
 async function doSearch() {
   const q = document.getElementById('searchInput').value.trim();
@@ -646,8 +728,20 @@ async function searchNASA(query) {
         </div>
       `;
       card.addEventListener('click', () => openModal(imgUrl, d.title, d.description || '', d.media_type || 'IMAGE'));
+      card.style.opacity = '0';
       grid.appendChild(card);
     });
+
+    // Stagger cards in
+    anime({
+      targets: '.card',
+      opacity: [0, 1],
+      translateY: [18, 0],
+      delay: anime.stagger(50),
+      duration: 500,
+      easing: 'easeOutExpo'
+    });
+
   } catch {
     loading.style.display = 'none';
     emptyState.style.display = 'block';
