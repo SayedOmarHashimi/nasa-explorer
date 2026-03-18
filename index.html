@@ -366,6 +366,59 @@
       display: block;
       background: #0a0a10;
     }
+    .card-video-thumb {
+      width: 100%;
+      height: 200px;
+      background: #0a0a10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-video-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+      opacity: 0.45;
+    }
+    .play-btn {
+      position: relative;
+      z-index: 2;
+      width: 52px; height: 52px;
+      background: rgba(255,255,255,0.12);
+      border: 1.5px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+      transition: background 0.2s, transform 0.2s;
+    }
+    .card:hover .play-btn { background: rgba(255,255,255,0.22); transform: scale(1.08); }
+    .play-btn svg { margin-left: 3px; }
+    .video-badge {
+      position: absolute;
+      top: 0.6rem; left: 0.6rem;
+      z-index: 3;
+      background: rgba(200,240,255,0.12);
+      border: 1px solid rgba(200,240,255,0.25);
+      border-radius: 4px;
+      padding: 0.18rem 0.45rem;
+      font-size: 0.58rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .modal-video {
+      width: 100%;
+      border-radius: 20px 20px 0 0;
+      display: block;
+      background: #000;
+      max-height: 420px;
+    }
     .card-body { padding: 1.2rem; }
     .card-type {
       font-size: 0.6rem;
@@ -571,6 +624,7 @@
   <div class="modal">
     <button class="modal-close" onclick="closeModalBtn()">✕</button>
     <img class="modal-img" id="modalImg" src="" alt=""/>
+    <video class="modal-video" id="modalVideo" controls style="display:none"></video>
     <div class="modal-body">
       <p class="modal-type" id="modalType"></p>
       <h2 class="modal-title" id="modalTitle"></h2>
@@ -697,7 +751,7 @@ async function searchNASA(query) {
   loading.style.display = 'flex';
 
   try {
-    const res = await fetch(`https://images-api.nasa.gov/search?q=${encodeURIComponent(query)}&media_type=image&page_size=24`);
+    const res = await fetch(`https://images-api.nasa.gov/search?q=${encodeURIComponent(query)}&media_type=image,video&page_size=24`);
     const data = await res.json();
     const items = data.collection.items;
     loading.style.display = 'none';
@@ -717,17 +771,31 @@ async function searchNASA(query) {
       const imgUrl = item.links[0]?.href;
       if (!imgUrl) return;
 
+      const isVideo = d.media_type === 'video';
       const card = document.createElement('div');
       card.className = 'card';
+
+      const thumbHtml = isVideo
+        ? `<div class="card-video-thumb">
+            <img src="${imgUrl}" onerror="this.style.display='none'" loading="lazy"/>
+            <span class="video-badge">Video</span>
+            <div class="play-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+                <polygon points="5,3 19,12 5,21"/>
+              </svg>
+            </div>
+          </div>`
+        : `<img class="card-img" src="${imgUrl}" alt="${d.title}" loading="lazy" onerror="this.style.display='none'"/>`;
+
       card.innerHTML = `
-        <img class="card-img" src="${imgUrl}" alt="${d.title}" loading="lazy" onerror="this.style.display='none'"/>
+        ${thumbHtml}
         <div class="card-body">
           <p class="card-type">${d.center || 'NASA'} · ${d.media_type || 'image'}</p>
           <h3 class="card-title">${d.title}</h3>
           <p class="card-desc">${d.description || 'No description available.'}</p>
         </div>
       `;
-      card.addEventListener('click', () => openModal(imgUrl, d.title, d.description || '', d.media_type || 'IMAGE'));
+      card.addEventListener('click', () => openModal(imgUrl, d.title, d.description || '', d.media_type || 'IMAGE', isVideo));
       card.style.opacity = '0';
       grid.appendChild(card);
     });
@@ -766,17 +834,48 @@ async function loadAPOD() {
 
 loadAPOD();
 
-function openModal(img, title, desc, type) {
-  document.getElementById('modalImg').src = img;
+async function openModal(url, title, desc, type, isVideo = false) {
+  const modalImg = document.getElementById('modalImg');
+  const modalVideo = document.getElementById('modalVideo');
+
   document.getElementById('modalTitle').textContent = title;
   document.getElementById('modalDesc').textContent = desc;
-  document.getElementById('modalType').textContent = type;
+  document.getElementById('modalType').textContent = type.toUpperCase();
+
+  if (isVideo) {
+    // Fetch the actual video URL from NASA's asset manifest
+    try {
+      const assetUrl = url.replace('~thumb.jpg', '').replace('preview.jpg', '');
+      const nasaId = url.match(/([^/]+)~thumb\.jpg$/)?.[1] || url.split('/').slice(-2, -1)[0];
+      const manifestRes = await fetch(`https://images-api.nasa.gov/asset/${nasaId}`);
+      const manifest = await manifestRes.json();
+      const videoItem = manifest.collection.items.find(i => i.href.endsWith('.mp4'));
+      if (videoItem) {
+        modalVideo.src = videoItem.href;
+      } else {
+        modalVideo.src = url;
+      }
+    } catch {
+      modalVideo.src = url;
+    }
+    modalImg.style.display = 'none';
+    modalVideo.style.display = 'block';
+  } else {
+    modalImg.src = url;
+    modalImg.style.display = 'block';
+    modalVideo.style.display = 'none';
+    modalVideo.src = '';
+  }
+
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 function closeModalBtn() {
   document.getElementById('modalOverlay').classList.remove('open');
   document.body.style.overflow = '';
+  const v = document.getElementById('modalVideo');
+  v.pause();
+  v.src = '';
 }
 function closeModal(e) {
   if (e.target === document.getElementById('modalOverlay')) closeModalBtn();
