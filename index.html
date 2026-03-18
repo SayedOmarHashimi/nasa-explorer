@@ -224,6 +224,65 @@
     .modal-close { position: sticky; top: 1rem; float: right; background: var(--faint); border: 1px solid var(--border); color: var(--muted); border-radius: 50%; width: 1.9rem; height: 1.9rem; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
     .modal-close:hover { background: rgba(255,255,255,0.1); color: var(--text); }
 
+    /* ── EPIC EARTH ── */
+    #epic-section { background: var(--bg); }
+    .epic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; width: 100%; max-width: 1140px; }
+    .epic-card { background: var(--surface); cursor: pointer; transition: background 0.2s; position: relative; overflow: hidden; }
+    .epic-card:hover { background: #13131b; }
+    .epic-img { width: 100%; height: 220px; object-fit: cover; display: block; background: #0a0a10; transition: transform 0.4s; }
+    .epic-card:hover .epic-img { transform: scale(1.04); }
+    .epic-body { padding: 1rem 1.2rem; }
+    .epic-date { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.3rem; font-weight: 500; }
+    .epic-caption { font-size: 0.78rem; color: var(--muted); font-weight: 300; }
+
+    /* ── NASA NEWS ── */
+    .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; width: 100%; max-width: 1140px; }
+    .news-card { background: var(--bg); padding: 1.8rem; cursor: pointer; transition: background 0.2s; text-decoration: none; display: block; }
+    .news-card:hover { background: #0d0d15; }
+    .news-tag { font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; font-weight: 500; }
+    .news-title { font-family: 'DM Serif Display', serif; font-size: 1.05rem; font-weight: 400; color: var(--text); margin-bottom: 0.6rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .news-summary { font-size: 0.78rem; color: var(--muted); line-height: 1.65; font-weight: 300; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 1rem; }
+    .news-date { font-size: 0.68rem; color: var(--muted); font-weight: 300; }
+    .news-arrow { float: right; color: var(--accent); font-size: 0.8rem; }
+
+    /* ── SPACE WEATHER ── */
+    #weather-section { background: var(--bg); }
+    .weather-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; width: 100%; max-width: 1140px; }
+    .weather-card { background: var(--surface); padding: 1.8rem; }
+    .weather-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+    .weather-label { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; font-weight: 500; }
+    .weather-value { font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: var(--text); margin-bottom: 0.4rem; }
+    .weather-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.6; font-weight: 300; }
+    .weather-status { display: inline-block; font-size: 0.6rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.18rem 0.5rem; border-radius: 4px; margin-top: 0.6rem; }
+    .weather-status.low { background: rgba(80,255,160,0.1); border: 1px solid rgba(80,255,160,0.2); color: #80ffb0; }
+    .weather-status.moderate { background: rgba(255,200,80,0.1); border: 1px solid rgba(255,200,80,0.2); color: #ffc850; }
+    .weather-status.high { background: rgba(255,80,80,0.12); border: 1px solid rgba(255,80,80,0.25); color: #ff8080; }
+
+    /* ── ISS TRACKER ── */
+    .iss-container { width: 100%; max-width: 1140px; display: grid; grid-template-columns: 1fr 320px; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .iss-map { background: var(--surface); min-height: 400px; position: relative; overflow: hidden; }
+    .iss-map canvas { display: block; width: 100%; height: 100%; }
+    .iss-stats { background: var(--bg); padding: 2rem; display: flex; flex-direction: column; gap: 1.2rem; justify-content: center; }
+    .iss-stat { border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+    .iss-stat:last-child { border-bottom: none; padding-bottom: 0; }
+    .iss-stat-label { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; font-weight: 500; }
+    .iss-stat-value { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: var(--text); }
+    .iss-stat-sub { font-size: 0.72rem; color: var(--muted); font-weight: 300; margin-top: 0.2rem; }
+    .iss-dot { position: absolute; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 0 4px rgba(200,240,255,0.2), 0 0 12px rgba(200,240,255,0.4); z-index: 2; }
+    .iss-dot::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 1px solid rgba(200,240,255,0.4); animation: issping 1.5s infinite; }
+    @keyframes issping { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
+
+    /* ── BACK TO TOP ── */
+    .back-to-top { position: fixed; bottom: 2rem; right: 2rem; z-index: 150; width: 2.6rem; height: 2.6rem; background: var(--surface); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; transform: translateY(10px); transition: opacity 0.3s, transform 0.3s, background 0.2s; pointer-events: none; }
+    .back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
+    .back-to-top:hover { background: rgba(255,255,255,0.08); }
+    .back-to-top svg { color: var(--muted); }
+
+    @media (max-width: 768px) {
+      .iss-container { grid-template-columns: 1fr; }
+      .iss-stats { padding: 1.5rem; }
+    }
+
     /* ── FOOTER ── */
     footer { border-top: 1px solid var(--border); padding: 2.2rem 4rem; display: flex; align-items: center; justify-content: space-between; }
     .footer-logo { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--muted); }
@@ -256,7 +315,10 @@
     <a href="#neo-section">Near Earth</a>
     <a href="#apod-section">Picture of the Day</a>
     <a href="#favorites-section">Favorites</a>
-<a href="#search-section" class="nav-cta">Explore Now</a>
+    <a href="#epic-section">Earth</a>
+    <a href="#news-section">News</a>
+    <a href="#iss-section">ISS</a>
+    <a href="#search-section" class="nav-cta">Explore Now</a>
   </div>
   <button class="nav-mobile-btn" onclick="toggleMobileMenu()">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -272,6 +334,9 @@
   <a href="#neo-section" onclick="toggleMobileMenu()">Near Earth Objects</a>
   <a href="#apod-section" onclick="toggleMobileMenu()">Picture of the Day</a>
   <a href="#favorites-section" onclick="toggleMobileMenu()">Favorites</a>
+  <a href="#epic-section" onclick="toggleMobileMenu()">Earth Imagery</a>
+  <a href="#news-section" onclick="toggleMobileMenu()">NASA News</a>
+  <a href="#iss-section" onclick="toggleMobileMenu()">ISS Tracker</a>
 </div>
 
 <!-- HERO -->
@@ -388,6 +453,41 @@
   <div id="favGrid"></div>
 </section>
 
+<!-- EPIC EARTH -->
+<section id="epic-section" class="nasa-section">
+  <p class="section-eyebrow">DSCOVR Satellite</p>
+  <h2 class="section-title">Earth from one million miles</h2>
+  <p class="section-sub">Full-color photos of our planet taken daily by NASA's EPIC camera aboard the DSCOVR satellite.</p>
+  <div class="epic-grid" id="epicGrid"></div>
+</section>
+
+<!-- NASA NEWS -->
+<section id="news-section" class="nasa-section" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <p class="section-eyebrow">Latest from NASA</p>
+  <h2 class="section-title">NASA News</h2>
+  <p class="section-sub">The latest discoveries, mission updates, and announcements from NASA.</p>
+  <div class="news-grid" id="newsGrid"></div>
+</section>
+
+<!-- SPACE WEATHER -->
+<section id="weather-section" class="nasa-section">
+  <p class="section-eyebrow">Solar Activity</p>
+  <h2 class="section-title">Space weather</h2>
+  <p class="section-sub">Current solar conditions, geomagnetic activity, and aurora forecasts from NASA's space weather database.</p>
+  <div class="weather-grid" id="weatherGrid"></div>
+</section>
+
+<!-- ISS TRACKER -->
+<section id="iss-section" class="nasa-section" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <p class="section-eyebrow">Live Tracking</p>
+  <h2 class="section-title">ISS location</h2>
+  <p class="section-sub">The current position of the International Space Station, updated in real time.</p>
+  <div class="iss-container" id="issContainer">
+    <div class="iss-map" id="issMap"></div>
+    <div class="iss-stats" id="issStats"></div>
+  </div>
+</section>
+
 <!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal">
@@ -410,6 +510,11 @@
 <div class="toast" id="toast"></div>
 
 <!-- FOOTER -->
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
 <footer>
   <div class="footer-logo">NASA Explorer</div>
   <div class="footer-note">Powered by NASA Open APIs · Data courtesy of NASA</div>
@@ -658,7 +763,11 @@ async function loadMarsPhotos() {
 
     anime({ targets: '.mars-card', opacity: [0,1], translateY: [14,0], delay: anime.stagger(40), duration: 500, easing: 'easeOutExpo' });
   } catch {
-    grid.innerHTML = '<p style="color:var(--muted);padding:2rem;text-align:center;font-size:0.85rem;">Could not load Mars photos. Please try again.</p>';
+    grid.innerHTML = `<div style="grid-column:1/-1;padding:3rem 2rem;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:1rem;opacity:0.3">🔴</div>
+      <p style="color:var(--text);font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:0.6rem;">Mars photos temporarily unavailable</p>
+      <p style="color:var(--muted);font-size:0.82rem;font-weight:300;line-height:1.7;max-width:400px;margin:0 auto;">NASA's Mars rover API is currently offline. Photos will appear automatically when the server comes back online.</p>
+    </div>`;
     meta.textContent = '';
   }
 }
@@ -878,6 +987,239 @@ function closeModalBtn() {
 }
 function closeModal(e) { if (e.target === document.getElementById('modalOverlay')) closeModalBtn(); }
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModalBtn(); });
+
+// ── BACK TO TOP ──
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('backToTop');
+  if (window.scrollY > 600) btn.classList.add('visible');
+  else btn.classList.remove('visible');
+});
+
+// ── EPIC EARTH ──
+async function loadEPIC() {
+  const grid = document.getElementById('epicGrid');
+  grid.innerHTML = '';
+  for (let i = 0; i < 6; i++) {
+    grid.innerHTML += `<div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line medium"></div></div></div>`;
+  }
+  try {
+    const res = await fetch(`https://api.nasa.gov/EPIC/api/natural?api_key=${NASA_KEY}`);
+    const data = await res.json();
+    const photos = data.slice(0, 8);
+    grid.innerHTML = '';
+    if (!photos.length) { grid.innerHTML = '<p style="color:var(--muted);padding:2rem;text-align:center;font-size:0.85rem;grid-column:1/-1;">No Earth imagery available right now.</p>'; return; }
+
+    photos.forEach(photo => {
+      const date = photo.date.split(' ')[0].replace(/-/g, '/');
+      const imgUrl = `https://epic.gsfc.nasa.gov/archive/natural/${date.replace(/\//g,'/')}/png/${photo.image}.png`;
+      const thumbUrl = `https://epic.gsfc.nasa.gov/archive/natural/${date.replace(/\//g,'/')}/thumbs/${photo.image}.jpg`;
+      const card = document.createElement('div');
+      card.className = 'epic-card';
+      card.innerHTML = `
+        <img class="epic-img" src="${thumbUrl}" loading="lazy" onerror="this.src='${imgUrl}'" alt="Earth from DSCOVR"/>
+        <div class="epic-body">
+          <p class="epic-date">${photo.date.split(' ')[0]}</p>
+          <p class="epic-caption">Lat ${photo.centroid_coordinates?.lat?.toFixed(1) ?? '—'}° · Lon ${photo.centroid_coordinates?.lon?.toFixed(1) ?? '—'}°</p>
+        </div>
+      `;
+      card.addEventListener('click', () => openModal(imgUrl, 'Earth from DSCOVR', `Captured on ${photo.date} by NASA\'s EPIC camera. Centroid: ${photo.centroid_coordinates?.lat?.toFixed(2)}°, ${photo.centroid_coordinates?.lon?.toFixed(2)}°`, 'EPIC · DSCOVR', false));
+      card.style.opacity = '0';
+      grid.appendChild(card);
+    });
+    anime({ targets: '.epic-card', opacity: [0,1], translateY: [14,0], delay: anime.stagger(50), duration: 500, easing: 'easeOutExpo' });
+  } catch {
+    grid.innerHTML = `<div style="grid-column:1/-1;padding:3rem 2rem;text-align:center;">
+      <p style="color:var(--text);font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:0.6rem;">Earth imagery temporarily unavailable</p>
+      <p style="color:var(--muted);font-size:0.82rem;font-weight:300;">NASA\'s EPIC API is currently offline. Check back soon.</p>
+    </div>`;
+  }
+}
+loadEPIC();
+
+// ── NASA NEWS ──
+async function loadNews() {
+  const grid = document.getElementById('newsGrid');
+  grid.innerHTML = '';
+  for (let i = 0; i < 6; i++) {
+    grid.innerHTML += `<div class="skeleton-card" style="background:var(--bg)"><div class="skeleton-body" style="padding:1.8rem"><div class="skeleton-line short"></div><div class="skeleton-line"></div><div class="skeleton-line medium"></div><div class="skeleton-line"></div></div></div>`;
+  }
+  try {
+    const res = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${NASA_KEY}&count=6`);
+    const articles = await res.json();
+    grid.innerHTML = '';
+
+    articles.forEach(article => {
+      const card = document.createElement('a');
+      card.className = 'news-card';
+      card.href = article.url || '#';
+      card.target = '_blank';
+      card.rel = 'noopener noreferrer';
+      card.innerHTML = `
+        <p class="news-tag">NASA · ${article.date}</p>
+        <h3 class="news-title">${article.title}</h3>
+        <p class="news-summary">${article.explanation}</p>
+        <div>
+          <span class="news-date">${article.copyright ? '© ' + article.copyright : 'NASA'}</span>
+          <span class="news-arrow">→</span>
+        </div>
+      `;
+      card.style.opacity = '0';
+      grid.appendChild(card);
+    });
+    anime({ targets: '.news-card', opacity: [0,1], translateY: [14,0], delay: anime.stagger(60), duration: 500, easing: 'easeOutExpo' });
+  } catch {
+    grid.innerHTML = `<div style="grid-column:1/-1;padding:3rem 2rem;text-align:center;">
+      <p style="color:var(--text);font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:0.6rem;">News temporarily unavailable</p>
+      <p style="color:var(--muted);font-size:0.82rem;font-weight:300;">Check back soon or visit nasa.gov directly.</p>
+    </div>`;
+  }
+}
+loadNews();
+
+// ── SPACE WEATHER ──
+async function loadSpaceWeather() {
+  const grid = document.getElementById('weatherGrid');
+  grid.innerHTML = '';
+  for (let i = 0; i < 4; i++) {
+    grid.innerHTML += `<div class="skeleton-card"><div class="skeleton-body" style="padding:1.8rem"><div class="skeleton-line short"></div><div class="skeleton-line medium"></div><div class="skeleton-line"></div></div></div>`;
+  }
+
+  try {
+    const today = new Date().toISOString().split('T')[0];
+    const weekAgo = new Date(Date.now() - 7*24*60*60*1000).toISOString().split('T')[0];
+
+    const [flarRes, cmeRes, gstRes] = await Promise.all([
+      fetch(`https://api.nasa.gov/DONKI/FLR?startDate=${weekAgo}&endDate=${today}&api_key=${NASA_KEY}`),
+      fetch(`https://api.nasa.gov/DONKI/CME?startDate=${weekAgo}&endDate=${today}&api_key=${NASA_KEY}`),
+      fetch(`https://api.nasa.gov/DONKI/GST?startDate=${weekAgo}&endDate=${today}&api_key=${NASA_KEY}`)
+    ]);
+
+    const [flares, cmes, gsts] = await Promise.all([flarRes.json(), cmeRes.json(), gstRes.json()]);
+
+    const recentFlare = flares[flares.length - 1];
+    const flareClass = recentFlare?.classType || 'None';
+    const flareLevel = flareClass.startsWith('X') ? 'high' : flareClass.startsWith('M') ? 'moderate' : 'low';
+
+    const gstLevel = gsts.length > 0 ? (parseFloat(gsts[gsts.length-1]?.allKpIndex?.[0]?.kpIndex || 0)) : 0;
+    const gstStatus = gstLevel >= 7 ? 'high' : gstLevel >= 4 ? 'moderate' : 'low';
+    const auroraChance = gstLevel >= 7 ? 'High' : gstLevel >= 4 ? 'Moderate' : 'Low';
+
+    grid.innerHTML = `
+      <div class="weather-card">
+        <div class="weather-icon">☀️</div>
+        <div class="weather-label">Solar Flares (7 days)</div>
+        <div class="weather-value">${flares.length}</div>
+        <div class="weather-desc">Most recent: Class ${flareClass}</div>
+        <span class="weather-status ${flareLevel}">${flareLevel.charAt(0).toUpperCase()+flareLevel.slice(1)} Activity</span>
+      </div>
+      <div class="weather-card">
+        <div class="weather-icon">💨</div>
+        <div class="weather-label">Coronal Mass Ejections</div>
+        <div class="weather-value">${cmes.length}</div>
+        <div class="weather-desc">CMEs detected in the past 7 days</div>
+        <span class="weather-status ${cmes.length > 5 ? 'high' : cmes.length > 2 ? 'moderate' : 'low'}">${cmes.length > 5 ? 'Elevated' : cmes.length > 2 ? 'Moderate' : 'Quiet'}</span>
+      </div>
+      <div class="weather-card">
+        <div class="weather-icon">🌍</div>
+        <div class="weather-label">Geomagnetic Storms</div>
+        <div class="weather-value">${gsts.length}</div>
+        <div class="weather-desc">Kp index: ${gstLevel.toFixed(1)}</div>
+        <span class="weather-status ${gstStatus}">${gstStatus.charAt(0).toUpperCase()+gstStatus.slice(1)}</span>
+      </div>
+      <div class="weather-card">
+        <div class="weather-icon">🌌</div>
+        <div class="weather-label">Aurora Forecast</div>
+        <div class="weather-value">${auroraChance}</div>
+        <div class="weather-desc">Based on current geomagnetic activity levels</div>
+        <span class="weather-status ${gstStatus}">Kp ${gstLevel.toFixed(1)}</span>
+      </div>
+    `;
+    anime({ targets: '.weather-card', opacity: [0,1], translateY: [14,0], delay: anime.stagger(80), duration: 500, easing: 'easeOutExpo' });
+  } catch {
+    grid.innerHTML = `<div style="grid-column:1/-1;padding:3rem 2rem;text-align:center;">
+      <p style="color:var(--text);font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:0.6rem;">Space weather data temporarily unavailable</p>
+      <p style="color:var(--muted);font-size:0.82rem;font-weight:300;">NASA\'s space weather API is currently offline. Check back soon.</p>
+    </div>`;
+  }
+}
+loadSpaceWeather();
+
+// ── ISS TRACKER ──
+let issInterval;
+async function loadISS() {
+  const mapEl = document.getElementById('issMap');
+  const statsEl = document.getElementById('issStats');
+  mapEl.innerHTML = '<div style="width:100%;height:400px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:0.85rem;">Loading ISS position…</div>';
+
+  async function updateISS() {
+    try {
+      const res = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
+      const d = await res.json();
+      const lat = parseFloat(d.latitude);
+      const lon = parseFloat(d.longitude);
+      const alt = parseFloat(d.altitude).toFixed(1);
+      const vel = parseFloat(d.velocity).toFixed(0);
+
+      // Map using simple SVG world projection
+      const mapW = mapEl.offsetWidth || 700;
+      const mapH = 400;
+      const x = ((lon + 180) / 360) * mapW;
+      const y = ((90 - lat) / 180) * mapH;
+
+      mapEl.innerHTML = `
+        <div style="position:relative;width:100%;height:400px;background:#0a0a12;overflow:hidden;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_map_-_low_resolution.svg/1280px-World_map_-_low_resolution.svg.png"
+               style="width:100%;height:100%;object-fit:cover;opacity:0.15;position:absolute;inset:0;" alt="world map"/>
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,240,255,0.03) 0%,transparent 100%);"></div>
+          <div class="iss-dot" style="left:${x}px;top:${y}px;"></div>
+          <div style="position:absolute;bottom:1rem;left:1rem;font-size:0.65rem;color:var(--muted);font-weight:300;letter-spacing:0.08em;">● ISS Current Position</div>
+        </div>
+      `;
+
+      const visibility = d.visibility || 'daylight';
+      statsEl.innerHTML = `
+        <div class="iss-stat">
+          <div class="iss-stat-label">Latitude</div>
+          <div class="iss-stat-value">${lat.toFixed(4)}°</div>
+          <div class="iss-stat-sub">${lat >= 0 ? 'North' : 'South'}</div>
+        </div>
+        <div class="iss-stat">
+          <div class="iss-stat-label">Longitude</div>
+          <div class="iss-stat-value">${lon.toFixed(4)}°</div>
+          <div class="iss-stat-sub">${lon >= 0 ? 'East' : 'West'}</div>
+        </div>
+        <div class="iss-stat">
+          <div class="iss-stat-label">Altitude</div>
+          <div class="iss-stat-value">${alt} km</div>
+          <div class="iss-stat-sub">Above Earth's surface</div>
+        </div>
+        <div class="iss-stat">
+          <div class="iss-stat-label">Velocity</div>
+          <div class="iss-stat-value">${parseInt(vel).toLocaleString()}</div>
+          <div class="iss-stat-sub">km/h</div>
+        </div>
+        <div class="iss-stat">
+          <div class="iss-stat-label">Visibility</div>
+          <div class="iss-stat-value" style="font-size:1rem;text-transform:capitalize;">${visibility}</div>
+          <div class="iss-stat-sub">Current condition</div>
+        </div>
+      `;
+    } catch {
+      statsEl.innerHTML = '<p style="color:var(--muted);font-size:0.82rem;font-weight:300;padding:1rem 0;">Could not fetch ISS position.</p>';
+    }
+  }
+
+  updateISS();
+  if (issInterval) clearInterval(issInterval);
+  issInterval = setInterval(updateISS, 5000);
+}
+
+// Load ISS when section is visible
+const issObserver = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) { loadISS(); issObserver.disconnect(); }
+}, { threshold: 0.1 });
+issObserver.observe(document.getElementById('iss-section'));
+
 </script>
 </body>
 </html>
