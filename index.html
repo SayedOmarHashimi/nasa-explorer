@@ -202,6 +202,9 @@
     .neo-stat { display: flex; justify-content: space-between; margin-bottom: 0.4rem; }
     .neo-stat-label { font-size: 0.72rem; color: var(--muted); font-weight: 300; }
     .neo-stat-value { font-size: 0.72rem; color: var(--text); font-weight: 400; }
+    .neo-stat-block { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; padding: 0.7rem 0.8rem; }
+    .neo-stat-block .neo-stat-label { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem; display: block; }
+    .neo-stat-block .neo-stat-value { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--text); display: block; line-height: 1.2; }
 
     /* ── FAVORITES ── */
     #favorites-section { background: var(--bg); }
@@ -757,12 +760,7 @@ loadAPOD();
 
 // ── MARS ROVER ──
 let currentRover = 'perseverance';
-async function setRover(rover, btn) {
-  currentRover = rover;
-  document.querySelectorAll('.rover-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  await loadMarsPhotos();
-}
+
 
 async function loadMarsPhotos() {
   const grid = document.getElementById('marsGrid');
@@ -798,7 +796,6 @@ async function loadMarsPhotos() {
     meta.textContent = '';
   }
 }
-loadMarsPhotos();
 
 // ── THIS DAY IN SPACE ──
 const spaceHistory = {
@@ -809,6 +806,9 @@ const spaceHistory = {
   "02-18": [{ year: 1930, text: "Pluto discovered by Clyde Tombaugh." }],
   "03-16": [{ year: 1966, text: "Gemini 8 performs first orbital docking in history." }],
   "03-17": [{ year: 1958, text: "Vanguard 1, the oldest satellite still in orbit, was launched." }, { year: 2013, text: "LADEE lunar mission announced by NASA." }],
+  "03-18": [{ year: 1965, text: "Aleksei Leonov performs the first spacewalk in history, floating outside Voskhod 2 for 12 minutes." }],
+  "03-19": [{ year: 2008, text: "NASA's MESSENGER spacecraft made its second flyby of Mercury, mapping more of the planet's surface." }, { year: 1982, text: "Argentina lands troops on South Georgia Island, indirectly triggering events that led to increased interest in space-based surveillance." }],
+  "03-20": [{ year: 1965, text: "NASA announces plans for the Apollo program's lunar landing missions." }],
   "04-12": [{ year: 1961, text: "Yuri Gagarin becomes the first human in space." }, { year: 1981, text: "First Space Shuttle launch — Columbia STS-1." }],
   "04-13": [{ year: 1970, text: "Apollo 13 oxygen tank explodes — crew safely returns." }],
   "05-05": [{ year: 1961, text: "Alan Shepard becomes first American in space." }],
@@ -881,12 +881,28 @@ async function loadNEO() {
       const card = document.createElement('div');
       card.className = 'neo-card';
       card.innerHTML = `
-        <div class="neo-name">${neo.name.replace(/[()]/g,'')}</div>
-        <span class="neo-badge ${dangerous ? 'dangerous' : 'safe'}">${dangerous ? '⚠ Potentially Hazardous' : '✓ Safe Passage'}</span>
-        <div class="neo-stat"><span class="neo-stat-label">Estimated diameter</span><span class="neo-stat-value">${avgDia} km</span></div>
-        <div class="neo-stat"><span class="neo-stat-label">Miss distance</span><span class="neo-stat-value">${distKm} km</span></div>
-        <div class="neo-stat"><span class="neo-stat-label">Velocity</span><span class="neo-stat-value">${vel} km/h</span></div>
-        <div class="neo-stat"><span class="neo-stat-label">Close approach</span><span class="neo-stat-value">${approach.close_approach_date}</span></div>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem;gap:0.5rem;">
+          <div class="neo-name">${neo.name.replace(/[()]/g,'').trim()}</div>
+          <span class="neo-badge ${dangerous ? 'dangerous' : 'safe'}">${dangerous ? '⚠ Hazardous' : '✓ Safe'}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;">
+          <div class="neo-stat-block">
+            <div class="neo-stat-label">Diameter</div>
+            <div class="neo-stat-value">${avgDia} km</div>
+          </div>
+          <div class="neo-stat-block">
+            <div class="neo-stat-label">Miss Distance</div>
+            <div class="neo-stat-value">${distKm} km</div>
+          </div>
+          <div class="neo-stat-block">
+            <div class="neo-stat-label">Velocity</div>
+            <div class="neo-stat-value">${vel} km/h</div>
+          </div>
+          <div class="neo-stat-block">
+            <div class="neo-stat-label">Close Approach</div>
+            <div class="neo-stat-value">${approach.close_approach_date}</div>
+          </div>
+        </div>
       `;
       card.style.opacity = '0';
       grid.appendChild(card);
@@ -965,54 +981,8 @@ async function surpriseMe() {
   btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Surprise Me';
 }
 
-// ── CAMERA FILTER ──
-let currentCamera = 'ALL';
-let allMarsPhotos = [];
 
-function buildCameraFilter(photos) {
-  const bar = document.getElementById('cameraFilterBar');
-  bar.innerHTML = '';
-  const cameras = ['ALL', ...new Set(photos.map(p => p.camera.name))];
-  cameras.forEach(cam => {
-    const btn = document.createElement('button');
-    btn.className = 'camera-btn' + (cam === currentCamera ? ' active' : '');
-    btn.textContent = cam === 'ALL' ? 'All Cameras' : cam;
-    btn.onclick = () => {
-      currentCamera = cam;
-      document.querySelectorAll('.camera-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderMarsPhotos(cam === 'ALL' ? allMarsPhotos : allMarsPhotos.filter(p => p.camera.name === cam));
-    };
-    bar.appendChild(btn);
-  });
-}
 
-function renderMarsPhotos(photos) {
-  const grid = document.getElementById('marsGrid');
-  grid.innerHTML = '';
-  if (!photos.length) {
-    grid.innerHTML = '<p style="color:var(--muted);padding:2rem;text-align:center;font-size:0.85rem;grid-column:1/-1;">No photos from this camera.</p>';
-    return;
-  }
-  const cards = [];
-  photos.forEach(photo => {
-    const card = document.createElement('div');
-    card.className = 'mars-card';
-    card.style.opacity = '0';
-    card.innerHTML = `
-      <img class="mars-img" src="${photo.img_src}" alt="${photo.camera.full_name}" loading="lazy" onerror="this.style.display='none'"/>
-      <div class="mars-body">
-        <p class="mars-camera">${photo.camera.name}</p>
-        <p class="mars-info">${photo.camera.full_name}</p>
-      </div>
-    `;
-    const rover = currentRover;
-    card.addEventListener('click', () => openModal(photo.img_src, `${rover.charAt(0).toUpperCase()+rover.slice(1)} — ${photo.camera.full_name}`, `Sol ${photo.sol} · Earth date ${photo.earth_date} · Camera: ${photo.camera.full_name}`, 'MARS ROVER', false));
-    grid.appendChild(card);
-    cards.push(card);
-  });
-  anime({ targets: cards, opacity: [0,1], translateY: [14,0], delay: anime.stagger(40), duration: 500, easing: 'easeOutExpo' });
-}
 
 // ── MODAL ──
 let currentModalData = {};
@@ -1115,86 +1085,9 @@ window.addEventListener('scroll', () => {
   else btn.classList.remove('visible');
 });
 
-// ── EPIC EARTH ──
-async function loadEPIC() {
-  const grid = document.getElementById('epicGrid');
-  grid.innerHTML = '';
-  for (let i = 0; i < 6; i++) {
-    grid.innerHTML += `<div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line medium"></div></div></div>`;
-  }
-  try {
-    const res = await fetch(`https://api.nasa.gov/EPIC/api/natural?api_key=${NASA_KEY}`);
-    const data = await res.json();
-    const photos = data.slice(0, 8);
-    grid.innerHTML = '';
-    if (!photos.length) { grid.innerHTML = '<p style="color:var(--muted);padding:2rem;text-align:center;font-size:0.85rem;grid-column:1/-1;">No Earth imagery available right now.</p>'; return; }
 
-    photos.forEach(photo => {
-      const date = photo.date.split(' ')[0].replace(/-/g, '/');
-      const imgUrl = `https://epic.gsfc.nasa.gov/archive/natural/${date.replace(/\//g,'/')}/png/${photo.image}.png`;
-      const thumbUrl = `https://epic.gsfc.nasa.gov/archive/natural/${date.replace(/\//g,'/')}/thumbs/${photo.image}.jpg`;
-      const card = document.createElement('div');
-      card.className = 'epic-card';
-      card.innerHTML = `
-        <img class="epic-img" src="${thumbUrl}" loading="lazy" onerror="this.src='${imgUrl}'" alt="Earth from DSCOVR"/>
-        <div class="epic-body">
-          <p class="epic-date">${photo.date.split(' ')[0]}</p>
-          <p class="epic-caption">Lat ${photo.centroid_coordinates?.lat?.toFixed(1) ?? '—'}° · Lon ${photo.centroid_coordinates?.lon?.toFixed(1) ?? '—'}°</p>
-        </div>
-      `;
-      card.addEventListener('click', () => openModal(imgUrl, 'Earth from DSCOVR', `Captured on ${photo.date} by NASA\'s EPIC camera. Centroid: ${photo.centroid_coordinates?.lat?.toFixed(2)}°, ${photo.centroid_coordinates?.lon?.toFixed(2)}°`, 'EPIC · DSCOVR', false));
-      card.style.opacity = '0';
-      grid.appendChild(card);
-    });
-    anime({ targets: '.epic-card', opacity: [0,1], translateY: [14,0], delay: anime.stagger(50), duration: 500, easing: 'easeOutExpo' });
-  } catch {
-    grid.innerHTML = `<div style="grid-column:1/-1;padding:3rem 2rem;text-align:center;">
-      <p style="color:var(--text);font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:0.6rem;">Earth imagery temporarily unavailable</p>
-      <p style="color:var(--muted);font-size:0.82rem;font-weight:300;">NASA\'s EPIC API is currently offline. Check back soon.</p>
-    </div>`;
-  }
-}
-loadEPIC();
 
-// ── NASA NEWS ──
-async function loadNews() {
-  const grid = document.getElementById('newsGrid');
-  grid.innerHTML = '';
-  for (let i = 0; i < 6; i++) {
-    grid.innerHTML += `<div class="skeleton-card" style="background:var(--bg)"><div class="skeleton-body" style="padding:1.8rem"><div class="skeleton-line short"></div><div class="skeleton-line"></div><div class="skeleton-line medium"></div><div class="skeleton-line"></div></div></div>`;
-  }
-  try {
-    const res = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${NASA_KEY}&count=6`);
-    const articles = await res.json();
-    grid.innerHTML = '';
 
-    articles.forEach(article => {
-      const card = document.createElement('a');
-      card.className = 'news-card';
-      card.href = article.url || '#';
-      card.target = '_blank';
-      card.rel = 'noopener noreferrer';
-      card.innerHTML = `
-        <p class="news-tag">NASA · ${article.date}</p>
-        <h3 class="news-title">${article.title}</h3>
-        <p class="news-summary">${article.explanation}</p>
-        <div>
-          <span class="news-date">${article.copyright ? '© ' + article.copyright : 'NASA'}</span>
-          <span class="news-arrow">→</span>
-        </div>
-      `;
-      card.style.opacity = '0';
-      grid.appendChild(card);
-    });
-    anime({ targets: '.news-card', opacity: [0,1], translateY: [14,0], delay: anime.stagger(60), duration: 500, easing: 'easeOutExpo' });
-  } catch {
-    grid.innerHTML = `<div style="grid-column:1/-1;padding:3rem 2rem;text-align:center;">
-      <p style="color:var(--text);font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:0.6rem;">News temporarily unavailable</p>
-      <p style="color:var(--muted);font-size:0.82rem;font-weight:300;">Check back soon or visit nasa.gov directly.</p>
-    </div>`;
-  }
-}
-loadNews();
 
 // ── SPACE WEATHER ──
 async function loadSpaceWeather() {
@@ -1307,13 +1200,13 @@ async function loadISS() {
       // Build SVG path
       let pathD = '';
       orbitPoints.forEach((p, i) => {
-        if (i === 0) { pathD += \`M\${p.px},\${p.py}\`; }
+        if (i === 0) { pathD += `M${p.px},${p.py}`; }
         else {
           const prev = orbitPoints[i-1];
           if (Math.abs(p.px - prev.px) < mapW2 * 0.4) {
-            pathD += \` L\${p.px},\${p.py}\`;
+            pathD += ` L${p.px},${p.py}`;
           } else {
-            pathD += \` M\${p.px},\${p.py}\`;
+            pathD += ` M${p.px},${p.py}`;
           }
         }
       });
@@ -1321,8 +1214,8 @@ async function loadISS() {
       mapEl.innerHTML = `
         <div style="position:relative;width:100%;height:400px;background:#0d1220;overflow:hidden;">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_map_-_low_resolution.svg/1280px-World_map_-_low_resolution.svg.png"
-               style="width:100%;height:100%;object-fit:cover;opacity:0.55;position:absolute;inset:0;filter:brightness(0.7) saturate(0.6) hue-rotate(190deg);" alt="world map"/>
-          <div style="position:absolute;inset:0;background:rgba(6,6,20,0.35);"></div>
+               style="width:100%;height:100%;object-fit:cover;opacity:0.9;position:absolute;inset:0;filter:brightness(1.1) saturate(0.5) hue-rotate(190deg);" alt="world map"/>
+          <div style="position:absolute;inset:0;background:rgba(6,6,20,0.1);"></div>
           <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:1;" viewBox="0 0 ${mapW2} ${mapH2}" preserveAspectRatio="none">
             <defs>
               <linearGradient id="orbitGrad" x1="0%" y1="0%" x2="100%" y2="0%">
