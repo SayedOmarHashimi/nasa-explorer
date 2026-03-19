@@ -161,7 +161,7 @@
     .apod-body { padding: 3rem; display: flex; flex-direction: column; justify-content: center; }
     .apod-meta { font-size: 0.66rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.9rem; }
     .apod-title { font-family: 'DM Serif Display', serif; font-size: 1.6rem; font-weight: 400; line-height: 1.25; color: var(--text); margin-bottom: 1.1rem; letter-spacing: -0.01em; }
-    .apod-explanation { font-size: 0.84rem; color: var(--muted); line-height: 1.85; font-weight: 300; display: -webkit-box; -webkit-line-clamp: 9; -webkit-box-orient: vertical; overflow: hidden; }
+    .apod-explanation { font-size: 0.84rem; color: var(--muted); line-height: 1.85; font-weight: 300; }
 
     /* ── MARS ROVER ── */
     #mars-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
@@ -367,12 +367,9 @@
   <div class="nav-logo">NASA Explorer</div>
   <div class="nav-links">
     <a href="#search-section">Search</a>
-    <a href="#mars-section">Mars</a>
     <a href="#neo-section">Near Earth</a>
     <a href="#apod-section">Picture of the Day</a>
     <a href="#favorites-section">Favorites</a>
-    <a href="#epic-section">Earth</a>
-    <a href="#news-section">News</a>
     <a href="#iss-section">ISS</a>
     <a href="#search-section" class="nav-cta">Explore Now</a>
   </div>
@@ -386,12 +383,9 @@
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="#search-section" onclick="toggleMobileMenu()">Search</a>
-  <a href="#mars-section" onclick="toggleMobileMenu()">Mars Rover</a>
   <a href="#neo-section" onclick="toggleMobileMenu()">Near Earth Objects</a>
   <a href="#apod-section" onclick="toggleMobileMenu()">Picture of the Day</a>
   <a href="#favorites-section" onclick="toggleMobileMenu()">Favorites</a>
-  <a href="#epic-section" onclick="toggleMobileMenu()">Earth Imagery</a>
-  <a href="#news-section" onclick="toggleMobileMenu()">NASA News</a>
   <a href="#iss-section" onclick="toggleMobileMenu()">ISS Tracker</a>
 </div>
 
@@ -400,13 +394,8 @@
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <span class="hero-label">NASA Open APIs</span>
-    <h1 class="hero-title">Explore the <em>universe</em><br>from your browser</h1>
-    <p class="hero-sub">Search millions of NASA images, track asteroids, browse Mars rover photos, and journey across the cosmos.</p>
-    <div class="hero-actions">
-      <a href="#search-section" class="btn-primary">Start Exploring</a>
-      <a href="#apod-section" class="btn-ghost">Today's Image</a>
-    </div>
+    <h1 class="hero-title" style="font-size:clamp(2.5rem,6vw,5rem);margin-bottom:2.5rem;">Search the <em>cosmos</em></h1>
+    <a href="#search-section" class="btn-primary" style="font-size:0.9rem;padding:0.9rem 2.5rem;">Start Exploring</a>
   </div>
   <div class="scroll-hint">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
@@ -460,9 +449,9 @@
 
   <div id="results">
     <div class="loading" id="loading"><div class="spinner"></div><span>Searching NASA's archives…</span></div>
-    <div class="empty-state" id="emptyState">
+    <div class="empty-state" id="emptyState" style="display:none">
       <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <p>Search for anything — planets, missions,<br>nebulae, astronauts, and beyond.</p>
+      <p></p>
     </div>
     <p class="results-header" id="resultsHeader" style="display:none"></p>
     <div class="grid" id="grid"></div>
@@ -477,20 +466,7 @@
   </div>
 </section>
 
-<!-- MARS ROVER -->
-<section id="mars-section" class="nasa-section">
-  <p class="section-eyebrow">Live from the Red Planet</p>
-  <h2 class="section-title">Mars Rover Photos</h2>
-  <p class="section-sub">Real photos taken by NASA's rovers on the surface of Mars, updated daily.</p>
-  <div class="rover-controls">
-    <button class="rover-btn active" onclick="setRover('perseverance', this)">Perseverance</button>
-    <button class="rover-btn" onclick="setRover('curiosity', this)">Curiosity</button>
-    <button class="rover-btn" onclick="setRover('opportunity', this)">Opportunity</button>
-  </div>
-  <div class="camera-filter-bar" id="cameraFilterBar"></div>
-  <p class="rover-meta" id="roverMeta">Loading latest photos…</p>
-  <div class="mars-grid" id="marsGrid"></div>
-</section>
+
 
 <!-- THIS DAY IN SPACE -->
 <section id="today-section" class="nasa-section">
@@ -516,21 +492,9 @@
   <div id="favGrid"></div>
 </section>
 
-<!-- EPIC EARTH -->
-<section id="epic-section" class="nasa-section">
-  <p class="section-eyebrow">DSCOVR Satellite</p>
-  <h2 class="section-title">Earth from one million miles</h2>
-  <p class="section-sub">Full-color photos of our planet taken daily by NASA's EPIC camera aboard the DSCOVR satellite.</p>
-  <div class="epic-grid" id="epicGrid"></div>
-</section>
 
-<!-- NASA NEWS -->
-<section id="news-section" class="nasa-section" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
-  <p class="section-eyebrow">Latest from NASA</p>
-  <h2 class="section-title">NASA News</h2>
-  <p class="section-sub">The latest discoveries, mission updates, and announcements from NASA.</p>
-  <div class="news-grid" id="newsGrid"></div>
-</section>
+
+
 
 <!-- SPACE WEATHER -->
 <section id="weather-section" class="nasa-section">
@@ -1322,13 +1286,55 @@ async function loadISS() {
       const x = ((lon + 180) / 360) * mapW;
       const y = ((90 - lat) / 180) * mapH;
 
+      // Generate orbital path prediction (ISS orbits every ~92 min, 51.6° inclination)
+      const orbitPoints = [];
+      const orbitalPeriodMin = 92;
+      const inclination = 51.6 * Math.PI / 180;
+      const angularVelocity = 360 / orbitalPeriodMin; // degrees per minute
+      const mapW2 = mapEl.offsetWidth || 700;
+      const mapH2 = 400;
+
+      // Project 60 minutes ahead in 2-minute steps
+      for (let t = -10; t <= 60; t += 2) {
+        const futureLon = ((lon + angularVelocity * t) % 360 + 540) % 360 - 180;
+        const phase = (t / orbitalPeriodMin) * 2 * Math.PI;
+        const futureLat = Math.asin(Math.sin(inclination) * Math.sin(phase + Math.atan2(Math.sin(lat * Math.PI/180), Math.cos(inclination) * Math.cos(lat * Math.PI/180)))) * 180 / Math.PI;
+        const px = ((futureLon + 180) / 360) * mapW2;
+        const py = ((90 - futureLat) / 180) * mapH2;
+        orbitPoints.push({ px, py, t });
+      }
+
+      // Build SVG path
+      let pathD = '';
+      orbitPoints.forEach((p, i) => {
+        if (i === 0) { pathD += \`M\${p.px},\${p.py}\`; }
+        else {
+          const prev = orbitPoints[i-1];
+          if (Math.abs(p.px - prev.px) < mapW2 * 0.4) {
+            pathD += \` L\${p.px},\${p.py}\`;
+          } else {
+            pathD += \` M\${p.px},\${p.py}\`;
+          }
+        }
+      });
+
       mapEl.innerHTML = `
-        <div style="position:relative;width:100%;height:400px;background:#0a0a12;overflow:hidden;">
+        <div style="position:relative;width:100%;height:400px;background:#0d1220;overflow:hidden;">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_map_-_low_resolution.svg/1280px-World_map_-_low_resolution.svg.png"
-               style="width:100%;height:100%;object-fit:cover;opacity:0.15;position:absolute;inset:0;" alt="world map"/>
-          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,240,255,0.03) 0%,transparent 100%);"></div>
-          <div class="iss-dot" style="left:${x}px;top:${y}px;"></div>
-          <div style="position:absolute;bottom:1rem;left:1rem;font-size:0.65rem;color:var(--muted);font-weight:300;letter-spacing:0.08em;">● ISS Current Position</div>
+               style="width:100%;height:100%;object-fit:cover;opacity:0.55;position:absolute;inset:0;filter:brightness(0.7) saturate(0.6) hue-rotate(190deg);" alt="world map"/>
+          <div style="position:absolute;inset:0;background:rgba(6,6,20,0.35);"></div>
+          <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:1;" viewBox="0 0 ${mapW2} ${mapH2}" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="orbitGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:rgba(200,240,255,0.15)"/>
+                <stop offset="60%" style="stop-color:rgba(200,240,255,0.5)"/>
+                <stop offset="100%" style="stop-color:rgba(200,240,255,0.9)"/>
+              </linearGradient>
+            </defs>
+            <path d="${pathD}" fill="none" stroke="url(#orbitGrad)" stroke-width="1.5" stroke-dasharray="4,3" stroke-linecap="round"/>
+          </svg>
+          <div class="iss-dot" style="left:${x}px;top:${y}px;z-index:3;"></div>
+          <div style="position:absolute;bottom:1rem;left:1rem;font-size:0.62rem;color:rgba(200,240,255,0.6);font-weight:300;letter-spacing:0.08em;z-index:2;">● ISS · dashed line shows predicted path (60 min)</div>
         </div>
       `;
 
