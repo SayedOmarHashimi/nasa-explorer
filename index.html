@@ -444,7 +444,6 @@
       <p class="modal-desc" id="modalDesc"></p>
       <div class="modal-actions">
         <button class="modal-share-btn" onclick="shareItem()">Share →</button>
-        <button class="modal-share-btn" id="modalFavBtn" onclick="toggleModalFav()">♡ Save</button>
         <a class="modal-download-btn" id="modalDownloadBtn" href="#" download target="_blank">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
@@ -484,7 +483,6 @@ let currentPage = 1;
 let currentQuery = '';
 let currentModalUrl = '';
 let currentModalTitle = '';
-let favorites = JSON.parse(localStorage.getItem('nasa_favorites') || '[]');
 
 // ── MOBILE MENU ──
 function toggleMobileMenu() {
@@ -605,8 +603,6 @@ async function searchNASA(query, reset = false) {
       const imgUrl = item.links[0]?.href;
       if (!imgUrl) return;
       const isVideo = d.media_type === 'video';
-      const isFaved = favorites.some(f => f.url === imgUrl);
-
       const card = document.createElement('div');
       card.className = 'card';
       const thumbHtml = isVideo
@@ -615,9 +611,6 @@ async function searchNASA(query, reset = false) {
 
       card.innerHTML = `
         ${thumbHtml}
-        <button class="fav-btn ${isFaved ? 'active' : ''}" onclick="toggleFav(event, '${imgUrl.replace(/'/g,"\\'")}', '${(d.title||'').replace(/'/g,"\\'")}')">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="${isFaved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        </button>
         <div class="card-body">
           <p class="card-type">${d.center || 'NASA'} · ${d.media_type || 'image'}</p>
           <h3 class="card-title">${d.title}</h3>
@@ -631,7 +624,7 @@ async function searchNASA(query, reset = false) {
         </div>
       `;
       card.addEventListener('click', (e) => {
-        if (e.target.closest('.fav-btn') || e.target.closest('.share-btn')) return;
+        if (e.target.closest('.share-btn')) return;
         openModal(imgUrl, d.title, d.description || '', d.media_type || 'IMAGE', isVideo);
       });
       card.style.opacity = '0';
@@ -829,43 +822,6 @@ async function loadNEO() {
 }
 loadNEO();
 
-// ── FAVORITES ──
-function toggleFav(event, url, title) {
-  event.stopPropagation();
-  const btn = event.currentTarget;
-  const idx = favorites.findIndex(f => f.url === url);
-  if (idx === -1) {
-    favorites.push({ url, title });
-    btn.classList.add('active');
-    btn.querySelector('svg').setAttribute('fill', 'currentColor');
-    showToast('Added to favorites ♡');
-  } else {
-    favorites.splice(idx, 1);
-    btn.classList.remove('active');
-    btn.querySelector('svg').setAttribute('fill', 'none');
-    showToast('Removed from favorites');
-  }
-  localStorage.setItem('nasa_favorites', JSON.stringify(favorites));
-  renderFavorites();
-}
-
-function renderFavorites() {
-  const grid = document.getElementById('favGrid');
-  if (!favorites.length) {
-    grid.innerHTML = '<p class="fav-empty">No favorites yet — click the ♡ on any image to save it here.</p>';
-    return;
-  }
-  grid.innerHTML = `<div class="grid">${favorites.map(f => `
-    <div class="card" onclick="openModal('${f.url.replace(/'/g,"\\'")}', '${f.title.replace(/'/g,"\\'")}', '', 'SAVED', false)">
-      <img class="card-img" src="${f.url}" loading="lazy" onerror="this.style.display='none'"/>
-      <div class="card-body">
-        <h3 class="card-title">${f.title}</h3>
-      </div>
-    </div>
-  `).join('')}</div>`;
-}
-renderFavorites();
-
 // ── SURPRISE ME ──
 const surpriseTerms = [
   'Aurora Borealis', 'Supernova', 'Neutron Star', 'Solar Flare', 'Crab Nebula',
@@ -911,9 +867,6 @@ async function openModal(url, title, desc, type, isVideo = false) {
   document.getElementById('modalDesc').textContent = desc;
   document.getElementById('modalType').textContent = type.toUpperCase();
 
-  const isFaved = favorites.some(f => f.url === url);
-  document.getElementById('modalFavBtn').textContent = isFaved ? '♥ Saved' : '♡ Save';
-
   // Set download and NASA links
   const downloadBtn = document.getElementById('modalDownloadBtn');
   const nasaBtn = document.getElementById('modalNasaBtn');
@@ -948,22 +901,6 @@ async function openModal(url, title, desc, type, isVideo = false) {
 
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
-}
-
-function toggleModalFav() {
-  const { url, title } = currentModalData;
-  const idx = favorites.findIndex(f => f.url === url);
-  if (idx === -1) {
-    favorites.push({ url, title });
-    document.getElementById('modalFavBtn').textContent = '♥ Saved';
-    showToast('Added to favorites ♡');
-  } else {
-    favorites.splice(idx, 1);
-    document.getElementById('modalFavBtn').textContent = '♡ Save';
-    showToast('Removed from favorites');
-  }
-  localStorage.setItem('nasa_favorites', JSON.stringify(favorites));
-  renderFavorites();
 }
 
 function shareItem() {
