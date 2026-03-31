@@ -409,10 +409,6 @@
 
 <!-- SEARCH SECTION -->
 <section id="search-section" class="nasa-section">
-  <p class="section-eyebrow">Image & Video Library</p>
-  <h2 class="section-title">Search the cosmos</h2>
-  <p class="section-sub">Every image, mission, and discovery — all searchable in one place.</p>
-
   <div class="search-wrapper">
     <input class="search-bar" id="searchInput" type="text" placeholder="Try 'Andromeda', 'Apollo 11', 'Black Hole'…"/>
     <button class="search-btn" onclick="doSearch()">
@@ -420,28 +416,9 @@
     </button>
   </div>
 
-  <div class="filter-bar">
-    <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
-    <button class="filter-btn" onclick="setFilter('image', this)">Images Only</button>
-    <button class="filter-btn" onclick="setFilter('video', this)">Videos Only</button>
-  </div>
-
-  <div class="suggestions">
-    <span class="suggestion-pill" onclick="quickSearch('Milky Way')">Milky Way</span>
-    <span class="suggestion-pill" onclick="quickSearch('Mars Rover')">Mars Rover</span>
-    <span class="suggestion-pill" onclick="quickSearch('Black Hole')">Black Hole</span>
-    <span class="suggestion-pill" onclick="quickSearch('Apollo 11')">Apollo 11</span>
-    <span class="suggestion-pill" onclick="quickSearch('Hubble')">Hubble</span>
-    <span class="suggestion-pill" onclick="quickSearch('Nebula')">Nebula</span>
-    <span class="suggestion-pill" onclick="quickSearch('Saturn')">Saturn</span>
-    <span class="suggestion-pill" onclick="quickSearch('James Webb')">James Webb</span>
-  </div>
-  <button class="surprise-btn" id="surpriseBtn" onclick="surpriseMe()">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-    </svg>
-    Surprise Me
-  </button>
+  <p class="section-eyebrow">Image & Video Library</p>
+  <h2 class="section-title">Search the Cosmos</h2>
+  <p class="section-sub">Every image, mission, and discovery — all searchable in one place.</p>
 
   <div id="results">
     <div class="loading" id="loading"><div class="spinner"></div><span>Searching NASA's archives…</span></div>
