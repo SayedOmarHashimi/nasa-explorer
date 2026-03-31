@@ -390,6 +390,12 @@
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
+    <div class="search-wrapper" style="margin-bottom:3rem;width:100%;max-width:620px;">
+      <input class="search-bar" id="searchInput" type="text" placeholder="Try 'Andromeda', 'Apollo 11', 'Black Hole'…"/>
+      <button class="search-btn" onclick="doSearch()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      </button>
+    </div>
     <h1 class="hero-title" style="font-size:clamp(2.5rem,6vw,5rem);margin-bottom:2.5rem;">Search the <em>cosmos</em></h1>
     <a href="#search-section" class="btn-primary" style="font-size:0.9rem;padding:0.9rem 2.5rem;">Start Exploring</a>
   </div>
@@ -409,13 +415,6 @@
 
 <!-- SEARCH SECTION -->
 <section id="search-section" class="nasa-section">
-  <div class="search-wrapper">
-    <input class="search-bar" id="searchInput" type="text" placeholder="Try 'Andromeda', 'Apollo 11', 'Black Hole'…"/>
-    <button class="search-btn" onclick="doSearch()">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-    </button>
-  </div>
-
   <p class="section-eyebrow">Image & Video Library</p>
   <h2 class="section-title">Search the Cosmos</h2>
   <p class="section-sub">Every image, mission, and discovery — all searchable in one place.</p>
