@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>NASA Explorer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,6 +34,7 @@
       backdrop-filter: blur(20px) saturate(180%);
       -webkit-backdrop-filter: blur(20px) saturate(180%);
       border-bottom: 1px solid var(--border);
+      animation: fadeDown 0.8s ease-out both;
     }
     .nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--text); letter-spacing: 0.01em; }
     .nav-links { display: flex; gap: 2rem; align-items: center; }
@@ -58,19 +61,23 @@
     .hero-bg { position: absolute; inset: 0; background-image: url('https://eoimages.gsfc.nasa.gov/images/imagerecords/79000/79765/dnb_land_ocean_ice.2012.3600x1800.jpg'); background-size: cover; background-position: center 40%; z-index: 0; }
     .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(6,6,10,0.15) 0%, rgba(6,6,10,0.1) 35%, rgba(6,6,10,0.6) 70%, rgba(6,6,10,1) 100%); z-index: 1; }
     .hero-content { position: relative; z-index: 10; text-align: center; max-width: 800px; padding: 0 2rem; }
-    .hero-title { font-family: 'DM Serif Display', serif; font-size: clamp(2.5rem,6vw,5rem); font-weight: 400; line-height: 1.06; color: #fff; margin-bottom: 2.5rem; letter-spacing: -0.01em; opacity: 0; animation: fadeUp 0.8s 0.4s forwards; text-shadow: 0 4px 40px rgba(0,0,0,0.5); }
+    .hero-title { font-family: 'DM Serif Display', serif; font-size: clamp(2.5rem,6vw,5rem); font-weight: 400; line-height: 1.06; color: #fff; margin-bottom: 2.5rem; letter-spacing: -0.01em; opacity: 0; animation: fadeUp 0.8s 0.4s both; text-shadow: 0 4px 40px rgba(0,0,0,0.5); }
     .hero-title em { font-style: italic; color: var(--accent); }
-    .hero-search { width: 100%; max-width: 620px; position: relative; margin-bottom: 3rem; opacity: 0; animation: fadeUp 0.8s 0.2s forwards; }
+    .hero-search { width: 100%; max-width: 620px; position: relative; margin-bottom: 3rem; opacity: 0; animation: fadeUp 0.8s 0.2s both; }
     .scroll-hint { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 0.4rem; color: rgba(255,255,255,0.25); font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; animation: bounce 2.5s infinite; }
 
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); opacity: 0.25; } 50% { transform: translateX(-50%) translateY(6px); opacity: 0.5; } }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
 
     /* ── SHARED ── */
     .nasa-section { padding: 7rem 2rem 5rem; display: flex; flex-direction: column; align-items: center; }
-    .section-eyebrow { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.9rem; }
-    .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 400; text-align: center; color: var(--text); line-height: 1.15; margin-bottom: 0.75rem; letter-spacing: -0.01em; }
-    .section-sub { color: var(--muted); font-size: 0.92rem; font-weight: 300; text-align: center; line-height: 1.75; margin-bottom: 3rem; max-width: 460px; }
+    .section-eyebrow { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.9rem; opacity: 0; }
+    .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 400; text-align: center; color: var(--text); line-height: 1.15; margin-bottom: 0.75rem; letter-spacing: -0.01em; opacity: 0; }
+    .section-sub { color: var(--muted); font-size: 0.92rem; font-weight: 300; text-align: center; line-height: 1.75; margin-bottom: 3rem; max-width: 460px; opacity: 0; }
+    .revealed { animation: fadeUp 0.7s ease-out both; }
 
     /* ── SEARCH ── */
     .search-bar { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1rem 4.2rem 1rem 1.3rem; color: var(--text); font-size: 0.92rem; font-family: 'DM Sans', sans-serif; font-weight: 300; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
@@ -93,10 +100,10 @@
     .skeleton-line { height: 10px; border-radius: 4px; background: linear-gradient(90deg, var(--surface) 25%, rgba(255,255,255,0.04) 50%, var(--surface) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; margin-bottom: 0.6rem; }
     .skeleton-line.short { width: 50%; }
     .skeleton-line.medium { width: 75%; }
-    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
     /* Cards */
-    .card { background: var(--surface); cursor: pointer; transition: background 0.2s; position: relative; }
+    .card { background: var(--surface); cursor: pointer; transition: background 0.2s; position: relative; opacity: 0; }
+    .card.animate-in { animation: cardIn 0.5s ease-out both; }
     .card:hover { background: #13131b; }
     .card-img { width: 100%; height: 200px; object-fit: cover; display: block; background: #0a0a10; }
     .card-video-thumb { width: 100%; height: 200px; background: #0a0a10; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
@@ -273,13 +280,23 @@
   <div class="footer-note">Powered by NASA Open APIs · Data courtesy of NASA</div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 <script>
   const NASA_KEY = 'EhKokKDTS19qKDjD4U0Vb4AdC5VC8NK3SojqmWis';
   let currentPage = 1;
   let currentQuery = '';
   let currentModalUrl = '';
   let currentModalTitle = '';
+
+  // Cache DOM references used repeatedly
+  const elGrid = document.getElementById('grid');
+  const elEmptyState = document.getElementById('emptyState');
+  const elResultsHeader = document.getElementById('resultsHeader');
+  const elLoadMoreBtn = document.getElementById('loadMoreBtn');
+  const elBackToTop = document.getElementById('backToTop');
+  const elToast = document.getElementById('toast');
+  const elModalOverlay = document.getElementById('modalOverlay');
+  const elModalImg = document.getElementById('modalImg');
+  const elModalVideo = document.getElementById('modalVideo');
 
   // ── MOBILE MENU ──
   function toggleMobileMenu() {
@@ -288,26 +305,21 @@
 
   // ── TOAST ──
   function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
+    elToast.textContent = msg;
+    elToast.classList.add('show');
+    setTimeout(() => elToast.classList.remove('show'), 2500);
   }
-
-  // ── NAV ENTRANCE ──
-  anime({ targets: 'nav', opacity: [0,1], translateY: [-10,0], duration: 800, easing: 'easeOutExpo' });
 
   // ── SECTION REVEAL ──
   const sectionObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        anime({ targets: entry.target, opacity: [0,1], translateY: [20,0], duration: 700, easing: 'easeOutExpo' });
+        entry.target.classList.add('revealed');
         sectionObserver.unobserve(entry.target);
       }
     });
   }, { threshold: 0.15 });
   document.querySelectorAll('.section-title, .section-eyebrow, .section-sub').forEach(el => {
-    el.style.opacity = '0';
     sectionObserver.observe(el);
   });
 
@@ -321,43 +333,51 @@
   }
   document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
 
-  function showSkeletons() {
-    const grid = document.getElementById('grid');
-    grid.innerHTML = '';
-    for (let i = 0; i < 6; i++) {
-      grid.innerHTML += `<div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line medium"></div><div class="skeleton-line"></div></div></div>`;
+  // Event delegation for share buttons — avoids inline onclick with escaped strings
+  elGrid.addEventListener('click', e => {
+    const btn = e.target.closest('.share-btn');
+    if (!btn) return;
+    e.stopPropagation();
+    const url = btn.dataset.url;
+    const title = btn.dataset.title;
+    if (navigator.share) {
+      navigator.share({ title, url });
+    } else {
+      navigator.clipboard.writeText(url).then(() => showToast('Link copied to clipboard!'));
     }
+  });
+
+  function showSkeletons() {
+    const skeletonCard = `<div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line medium"></div><div class="skeleton-line"></div></div></div>`;
+    elGrid.innerHTML = skeletonCard.repeat(6);
   }
 
   async function searchNASA(query, reset = false) {
-    const grid = document.getElementById('grid');
-    const emptyState = document.getElementById('emptyState');
-    const resultsHeader = document.getElementById('resultsHeader');
-    const loadMoreBtn = document.getElementById('loadMoreBtn');
-
     if (reset) showSkeletons();
-    emptyState.style.display = 'none';
-    resultsHeader.style.display = 'none';
-    loadMoreBtn.style.display = 'none';
+    elEmptyState.style.display = 'none';
+    elResultsHeader.style.display = 'none';
+    elLoadMoreBtn.style.display = 'none';
 
     try {
       const res = await fetch(`https://images-api.nasa.gov/search?q=${encodeURIComponent(query)}&media_type=image,video&page=${currentPage}&page_size=24`);
       const data = await res.json();
       const items = data.collection.items;
 
-      if (reset) grid.innerHTML = '';
+      if (reset) elGrid.innerHTML = '';
 
       if (!items || !items.length) {
         if (reset) {
-          emptyState.style.display = 'block';
-          emptyState.querySelector('p').textContent = `No results found for "${query}".`;
+          elEmptyState.style.display = 'block';
+          elEmptyState.querySelector('p').textContent = `No results found for "${query}".`;
         }
         return;
       }
 
-      resultsHeader.style.display = 'block';
-      resultsHeader.innerHTML = `<span>${items.length}</span> results for "<span>${query}</span>" — page <span>${currentPage}</span>`;
+      elResultsHeader.style.display = 'block';
+      elResultsHeader.innerHTML = `<span>${items.length}</span> results for "<span>${query}</span>" — page <span>${currentPage}</span>`;
 
+      // Build all cards in a DocumentFragment — single DOM insertion
+      const fragment = document.createDocumentFragment();
       items.forEach(item => {
         if (!item.links || !item.data) return;
         const d = item.data[0];
@@ -366,20 +386,25 @@
         const isVideo = d.media_type === 'video';
         const card = document.createElement('div');
         card.className = 'card';
+        card.dataset.url = imgUrl;
+        card.dataset.title = d.title || '';
+        card.dataset.desc = d.description || '';
+        card.dataset.type = d.media_type || 'IMAGE';
+        card.dataset.isVideo = isVideo ? '1' : '';
 
         const thumbHtml = isVideo
-          ? `<div class="card-video-thumb"><img src="${imgUrl}" loading="lazy" onerror="this.style.display='none'"/><span class="video-badge">Video</span><div class="play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div></div>`
-          : `<img class="card-img" src="${imgUrl}" alt="${d.title}" loading="lazy" onerror="this.style.display='none'"/>`;
+          ? `<div class="card-video-thumb"><img src="${imgUrl}" loading="lazy" onerror="this.style.display='none'" alt=""/><span class="video-badge">Video</span><div class="play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div></div>`
+          : `<img class="card-img" src="${imgUrl}" alt="${d.title ? d.title.replace(/"/g, '&quot;') : ''}" loading="lazy" onerror="this.style.display='none'"/>`;
 
         card.innerHTML = `
           ${thumbHtml}
           <div class="card-body">
             <p class="card-type">${d.center || 'NASA'} · ${d.media_type || 'image'}</p>
-            <h3 class="card-title">${d.title}</h3>
+            <h3 class="card-title">${d.title || ''}</h3>
             <p class="card-desc">${d.description || 'No description available.'}</p>
           </div>
           <div class="card-footer">
-            <button class="share-btn" onclick="shareCard(event,'${imgUrl.replace(/'/g,"\\'")}','${(d.title||'').replace(/'/g,"\\'")}')">
+            <button class="share-btn" data-url="${imgUrl}" data-title="${(d.title || '').replace(/"/g, '&quot;')}">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
               Share
             </button>
@@ -389,24 +414,32 @@
           if (e.target.closest('.share-btn')) return;
           openModal(imgUrl, d.title, d.description || '', d.media_type || 'IMAGE', isVideo);
         });
-        card.style.opacity = '0';
-        grid.appendChild(card);
+        fragment.appendChild(card);
       });
 
-      anime({ targets: '.card', opacity: [0,1], translateY: [18,0], delay: anime.stagger(40), duration: 500, easing: 'easeOutExpo' });
-      if (items.length === 24) loadMoreBtn.style.display = 'block';
+      elGrid.appendChild(fragment);
+
+      // Stagger card entrance with CSS animations — no library needed
+      requestAnimationFrame(() => {
+        elGrid.querySelectorAll('.card:not(.animate-in)').forEach((card, i) => {
+          card.style.animationDelay = `${i * 40}ms`;
+          card.classList.add('animate-in');
+        });
+      });
+
+      if (items.length === 24) elLoadMoreBtn.style.display = 'block';
 
     } catch {
-      grid.innerHTML = '';
-      emptyState.style.display = 'block';
-      emptyState.querySelector('p').textContent = 'Something went wrong. Please try again.';
+      elGrid.innerHTML = '';
+      elEmptyState.style.display = 'block';
+      elEmptyState.querySelector('p').textContent = 'Something went wrong. Please try again.';
     }
   }
 
   function loadMore() {
     currentPage++;
     searchNASA(currentQuery, false);
-    document.getElementById('loadMoreBtn').style.display = 'none';
+    elLoadMoreBtn.style.display = 'none';
   }
 
   // ── APOD ──
@@ -418,7 +451,7 @@
       if (d.media_type === 'video') {
         container.innerHTML = `<div class="apod-card" style="grid-template-columns:1fr"><div class="apod-body"><p class="apod-meta">${d.date}</p><h3 class="apod-title">${d.title}</h3><p class="apod-explanation">${d.explanation}</p><a href="${d.url}" target="_blank" style="margin-top:1.5rem;display:inline-block;color:var(--accent);font-size:0.82rem;">Watch Video →</a></div></div>`;
       } else {
-        container.innerHTML = `<div class="apod-card"><img class="apod-img" src="${d.hdurl || d.url}" alt="${d.title}" loading="lazy"/><div class="apod-body"><p class="apod-meta">${d.date}${d.copyright ? ' · ' + d.copyright : ''}</p><h3 class="apod-title">${d.title}</h3><p class="apod-explanation">${d.explanation}</p></div></div>`;
+        container.innerHTML = `<div class="apod-card"><img class="apod-img" src="${d.url}" alt="${d.title ? d.title.replace(/"/g, '&quot;') : ''}" loading="lazy"/><div class="apod-body"><p class="apod-meta">${d.date}${d.copyright ? ' · ' + d.copyright : ''}</p><h3 class="apod-title">${d.title}</h3><p class="apod-explanation">${d.explanation}</p></div></div>`;
       }
     } catch {
       document.getElementById('apodContainer').innerHTML = '<p style="color:var(--muted);text-align:center;font-size:0.85rem;font-weight:300;">Could not load today\'s image. NASA\'s API may be temporarily unavailable.</p>';
@@ -428,8 +461,6 @@
 
   // ── MODAL ──
   async function openModal(url, title, desc, type, isVideo = false) {
-    const modalImg = document.getElementById('modalImg');
-    const modalVideo = document.getElementById('modalVideo');
     currentModalUrl = url;
     currentModalTitle = title;
 
@@ -447,23 +478,23 @@
         const nasaId = url.match(/([^/]+?)(?:~thumb\.jpg|~preview\.jpg)$/)?.[1] || url.split('/').slice(-2,-1)[0];
         const manifest = await fetch(`https://images-api.nasa.gov/asset/${nasaId}`).then(r => r.json());
         const videoItem = manifest.collection.items.find(i => i.href.endsWith('.mp4'));
-        modalVideo.src = videoItem ? videoItem.href : url;
-      } catch { modalVideo.src = url; }
-      modalImg.style.display = 'none';
-      modalVideo.style.display = 'block';
+        elModalVideo.src = videoItem ? videoItem.href : url;
+      } catch { elModalVideo.src = url; }
+      elModalImg.style.display = 'none';
+      elModalVideo.style.display = 'block';
     } else {
       downloadBtn.href = url;
-      downloadBtn.download = title.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.jpg';
+      downloadBtn.download = (title || 'nasa').replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.jpg';
       downloadBtn.style.display = 'inline-flex';
       nasaBtn.href = url;
       nasaBtn.style.display = 'inline-flex';
-      modalImg.src = url;
-      modalImg.style.display = 'block';
-      modalVideo.style.display = 'none';
-      modalVideo.src = '';
+      elModalImg.src = url;
+      elModalImg.style.display = 'block';
+      elModalVideo.style.display = 'none';
+      elModalVideo.src = '';
     }
 
-    document.getElementById('modalOverlay').classList.add('open');
+    elModalOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
 
@@ -475,28 +506,19 @@
     }
   }
 
-  function shareCard(event, url, title) {
-    event.stopPropagation();
-    if (navigator.share) {
-      navigator.share({ title, url });
-    } else {
-      navigator.clipboard.writeText(url).then(() => showToast('Link copied to clipboard!'));
-    }
-  }
-
   function closeModalBtn() {
-    document.getElementById('modalOverlay').classList.remove('open');
+    elModalOverlay.classList.remove('open');
     document.body.style.overflow = '';
-    const v = document.getElementById('modalVideo');
-    v.pause(); v.src = '';
+    elModalVideo.pause();
+    elModalVideo.src = '';
   }
-  function closeModal(e) { if (e.target === document.getElementById('modalOverlay')) closeModalBtn(); }
+  function closeModal(e) { if (e.target === elModalOverlay) closeModalBtn(); }
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalBtn(); });
 
-  // ── BACK TO TOP ──
+  // ── BACK TO TOP — passive listener avoids blocking scroll ──
   window.addEventListener('scroll', () => {
-    document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 600);
-  });
+    elBackToTop.classList.toggle('visible', window.scrollY > 600);
+  }, { passive: true });
 </script>
 </body>
 </html>
